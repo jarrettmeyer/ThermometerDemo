@@ -14,7 +14,7 @@ namespace ThermometerDemo
             Console.Write("Enter a temp: ");
             int temperature = Convert.ToInt32(Console.ReadLine());
 
-            var factory = new ThermometerOutputFactory(kernel);
+            var factory = kernel.Get<ThermometerOutputFactory>();
             var output = factory.GetOutputForTemperature(temperature);
 
             Console.Write(output.Message);
@@ -30,6 +30,8 @@ namespace ThermometerDemo
             kernel.Bind<IThermometerOutput>().To<ReallyColdThermometerOutput>();
             kernel.Bind<IThermometerOutput>().To<NormalThermometerOutput>();
             kernel.Bind<IThermometerOutput>().To<ReallyHotThermometerOutput>();
+
+            kernel.Bind<ThermometerOutputFactory>().ToSelf();
         }
     }
 }

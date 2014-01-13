@@ -1,20 +1,20 @@
-﻿using System.Linq;
-using Ninject;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ThermometerDemo
 {
     public class ThermometerOutputFactory
     {
-        private readonly IKernel kernel;
+        private readonly IEnumerable<IThermometerOutput> outputs;
 
-        public ThermometerOutputFactory(IKernel kernel)
+        public ThermometerOutputFactory(IEnumerable<IThermometerOutput> outputs)
         {
-            this.kernel = kernel;
+            this.outputs = outputs;
         }
 
         public IThermometerOutput GetOutputForTemperature(int temperature)
         {
-            var output = kernel.GetAll<IThermometerOutput>()
+            var output = outputs
                 .Where(to => temperature >= to.Temperature)
                 .OrderBy(to => to.Temperature)
                 .Last();
